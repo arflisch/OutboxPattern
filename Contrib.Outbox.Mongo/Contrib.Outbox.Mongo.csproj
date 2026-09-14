@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Contrib.Outbox.Mongo</RootNamespace>
+    <PackageId>Contrib.Outbox.Mongo</PackageId>
+    <Description>Provider MongoDB (via Arc4u.Standard.MongoDB) pour Contrib.Outbox.Core. Tout ce qui est lié à Mongo vit ici ; référence Contrib.Outbox.Core pour s'y brancher via IOutboxStore.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Arc4u.MongoDB" Version="9.0.0-preview37" />
+    <PackageReference Include="Mongrow" Version="0.0.13" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contrib.Outbox.Core\Contrib.Outbox.Core.csproj" />
+  </ItemGroup>
+
+</Project>

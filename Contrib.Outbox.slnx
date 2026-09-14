@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../../RiderProjects/Contrib.Outbox/Contrib.Outbox.Core.Tests/Contrib.Outbox.Core.Tests.csproj" />
+  <Project Path="../../RiderProjects/Contrib.Outbox/Contrib.Outbox.Mongo.Tests/Contrib.Outbox.Mongo.Tests.csproj" />
+  <Project Path="../../RiderProjects/Contrib.Outbox/Contrib.Outbox.Core/Contrib.Outbox.Core.csproj" />
+  <Project Path="../../RiderProjects/Contrib.Outbox/Contrib.Outbox.Mongo/Contrib.Outbox.Mongo.csproj" />
+</Solution>
