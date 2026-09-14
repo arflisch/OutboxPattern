@@ -11,7 +11,6 @@ internal sealed class OutboxProcessor : IOutboxProcessor
     private readonly IOutboxStore _store;
     private readonly IOutboxDistributedLock _distributedLock;
     private readonly IMessagePublisher _publisher;
-    private readonly IOutboxPostPublishHook? _postPublishHook;
     private readonly OutboxOptions _options;
     private readonly ILogger<OutboxProcessor> _logger;
 
@@ -20,15 +19,13 @@ internal sealed class OutboxProcessor : IOutboxProcessor
         IOutboxDistributedLock distributedLock,
         IMessagePublisher publisher,
         IOptions<OutboxOptions> options,
-        ILogger<OutboxProcessor> logger,
-        IOutboxPostPublishHook? postPublishHook = null)
+        ILogger<OutboxProcessor> logger)
     {
         _store = store;
         _distributedLock = distributedLock;
         _publisher = publisher;
         _options = options.Value;
         _logger = logger;
-        _postPublishHook = postPublishHook;
     }
 
     public async Task<OutboxProcessingResult> ProcessPendingMessagesAsync(CancellationToken cancellationToken = default)
@@ -43,7 +40,7 @@ internal sealed class OutboxProcessor : IOutboxProcessor
 
         foreach (var message in pendingMessages)
         {
-            // 2. Pose le lock.
+            // 2. Acquire the lock.
             var lockKey = $"outbox:{message.Id}";
             await using var lockHandle = await _distributedLock.TryAcquireAsync(
                 lockKey, _options.LockTimeout, cancellationToken);
@@ -61,11 +58,6 @@ internal sealed class OutboxProcessor : IOutboxProcessor
 
                 await _store.MarkAsSentAsync(message.Id, DateTime.UtcNow, cancellationToken);
                 succeeded++;
-
-                if (_postPublishHook is not null)
-                {
-                    await _postPublishHook.OnPublishedAsync(message, cancellationToken);
-                }
             }
             catch (Exception ex)
             {

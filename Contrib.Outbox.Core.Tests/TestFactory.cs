@@ -14,7 +14,6 @@ internal static class TestFactory
         Mock<IOutboxStore> store,
         Mock<IOutboxDistributedLock> distributedLock,
         Mock<IMessagePublisher> publisher,
-        IOutboxPostPublishHook? hook = null,
         OutboxOptions? options = null)
     {
         return new OutboxProcessor(
@@ -22,8 +21,7 @@ internal static class TestFactory
             distributedLock.Object,
             publisher.Object,
             Microsoft.Extensions.Options.Options.Create(options ?? new OutboxOptions()),
-            NullLogger<OutboxProcessor>.Instance,
-            hook);
+            NullLogger<OutboxProcessor>.Instance);
     }
 
     public static StandardOutboxMessage CreateMessage(DateTime? creationTime = null) => new()

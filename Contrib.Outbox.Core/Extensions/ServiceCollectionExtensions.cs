@@ -10,13 +10,13 @@ namespace Contrib.Outbox.Core.Extensions;
 public static class ServiceCollectionExtensions
 {
     /// <summary>
-    /// Enregistre le moteur Outbox (IOutboxEnlister, IOutboxProcessor, le Worker résident et
-    /// le HealthCheck). L'application hôte doit par ailleurs enregistrer elle-même :
-    /// - un IOutboxStore (via un package provider : AddMongoOutboxStore, AddSqlOutboxStore,
-    ///   AddRedisOutboxStore, ou une implémentation maison),
-    /// - un IOutboxDistributedLock,
-    /// - un IMessagePublisher.
-    /// AddOutboxCore ne dépend lui-même d'aucune techno de stockage.
+    /// Registers the Outbox engine (IOutboxEnlister, IOutboxProcessor, the resident Worker and
+    /// the HealthCheck). The host application must additionally register on its own:
+    /// - an IOutboxStore (via a provider package: AddMongoOutboxStore, AddSqlOutboxStore,
+    ///   AddRedisOutboxStore, or a custom implementation),
+    /// - an IOutboxDistributedLock,
+    /// - an IMessagePublisher.
+    /// AddOutboxCore itself does not depend on any storage technology.
     /// </summary>
     public static IServiceCollection AddOutboxCore(
         this IServiceCollection services,
@@ -36,8 +36,8 @@ public static class ServiceCollectionExtensions
     }
 
     /// <summary>
-    /// Délègue au store enregistré la création de son infrastructure (index Mongo, table SQL,
-    /// structures Redis...). À appeler une fois au démarrage, avant app.Run().
+    /// Delegates to the registered store the creation of its infrastructure (Mongo indexes, SQL table,
+    /// Redis structures...). Call once at startup, before app.Run().
     /// </summary>
     public static async Task EnsureOutboxInfrastructureAsync(
         this IServiceProvider serviceProvider,

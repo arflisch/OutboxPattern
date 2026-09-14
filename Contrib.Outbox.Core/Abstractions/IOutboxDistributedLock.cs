@@ -1,9 +1,9 @@
 namespace Contrib.Outbox.Core.Abstractions;
 
 /// <summary>
-/// Abstraction du système de lock distribué. Fourni soit par l'application hôte
-/// (réutilisation d'un système existant), soit par une implémentation d'un provider
-/// (ex: Contrib.Outbox.Redis.RedisDistributedLock, Contrib.Outbox.Sql.SqlAdvisoryLock).
+/// Abstraction of the distributed lock system. Provided either by the host application
+/// (reusing an existing system), or by a provider implementation
+/// (e.g. Contrib.Outbox.Redis.RedisDistributedLock, Contrib.Outbox.Sql.SqlAdvisoryLock).
 /// </summary>
 public interface IOutboxDistributedLock
 {

@@ -1,8 +1,8 @@
 namespace Contrib.Outbox.Core.Abstractions;
 
 /// <summary>
-/// Enregistreur (côté écriture) : point d'entrée applicatif pour ajouter un message outbox.
-/// Délègue à IOutboxStore.EnlistAsync — voir ce contrat pour la sémantique de transactionContext.
+/// Enlister (write side): application entry point for adding an outbox message.
+/// Delegates to IOutboxStore.EnlistAsync — see that contract for the semantics of transactionContext.
 /// </summary>
 public interface IOutboxEnlister
 {

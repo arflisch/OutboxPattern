@@ -107,37 +107,6 @@ public class OutboxProcessorTests
     }
 
     [Fact]
-    public async Task Appelle_le_hook_post_publication_uniquement_en_cas_de_succes()
-    {
-        var failingMessage = TestFactory.CreateMessage();
-        var succeedingMessage = TestFactory.CreateMessage();
-
-        var store = new Mock<IOutboxStore>();
-        store.Setup(s => s.GetPendingBatchAsync(It.IsAny<int>(), It.IsAny<DateTime>(), It.IsAny<CancellationToken>()))
-             .ReturnsAsync(new[] { failingMessage, succeedingMessage });
-
-        var distributedLock = new Mock<IOutboxDistributedLock>();
-        distributedLock
-            .Setup(l => l.TryAcquireAsync(It.IsAny<string>(), It.IsAny<TimeSpan>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync((string key, TimeSpan _, CancellationToken _) => TestFactory.CreateLockHandle(key).Object);
-
-        var publisher = new Mock<IMessagePublisher>();
-        publisher.Setup(p => p.PublishAsync(failingMessage, It.IsAny<CancellationToken>()))
-                 .ThrowsAsync(new InvalidOperationException("boom"));
-        publisher.Setup(p => p.PublishAsync(succeedingMessage, It.IsAny<CancellationToken>()))
-                 .Returns(Task.CompletedTask);
-
-        var hook = new Mock<IOutboxPostPublishHook>();
-
-        var sut = TestFactory.CreateProcessor(store, distributedLock, publisher, hook.Object);
-
-        await sut.ProcessPendingMessagesAsync();
-
-        hook.Verify(h => h.OnPublishedAsync(succeedingMessage, It.IsAny<CancellationToken>()), Times.Once);
-        hook.Verify(h => h.OnPublishedAsync(failingMessage, It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
     public async Task Respecte_la_taille_de_batch_demandee_au_store()
     {
         var store = new Mock<IOutboxStore>();

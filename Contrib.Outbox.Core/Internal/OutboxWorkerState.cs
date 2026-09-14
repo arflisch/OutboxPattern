@@ -1,7 +1,7 @@
 namespace Contrib.Outbox.Core.Internal;
 
 /// <summary>
-/// État partagé entre le BackgroundService et le HealthCheck (singleton).
+/// State shared between the BackgroundService and the HealthCheck (singleton).
 /// </summary>
 public sealed class OutboxWorkerState
 {
